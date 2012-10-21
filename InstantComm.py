@@ -12,7 +12,7 @@ class IM():
         self.contact_dict={} 
         self.port = 17300
         self.broad_port = 2425
-        self.local_ip = LanChat.get_ip_info('eth0','addr')
+        self.local_ip = LanChat.get_ip_info('wlan0','addr')
         self.addr_List = []
         self.Brd_Queue = Queue(128)
         self.Message_Queue = Queue(256)
@@ -42,9 +42,13 @@ class IM():
         while self.alive:
             msg,addr=self.udp_recv.recvfrom(1024)
             message=unicode(msg)
-            address,port = addr 
-            data = self.contact_dict[address]['name']+' says: '+message
-            queue.put(data,1)
+            address,port = addr
+            try:
+
+                data = self.contact_dict[address]['name']+' says: '+message
+                queue.put(data,1)
+            except KeyError:
+                continue
 
     def readMsg(self,queue):
 
@@ -145,6 +149,7 @@ class IM():
         
 
     def __Deamon_join(self):
+        
         self.brd.stopBroadCast()
         self.alive =False
 
@@ -210,7 +215,3 @@ class IM():
         message = json.JSONEncoder().encode(raw_message)
         return message
         
-
-
-        
-

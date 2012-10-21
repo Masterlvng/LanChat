@@ -4,7 +4,7 @@ import struct
 from time import sleep
 class Broadcast():
     def __init__(self):
-        self.broadaddr=self.Get_BroadAddr('eth0')
+        self.broadaddr=self.Get_BroadAddr('wlan0')
         self.PORT = 2425
         self.alive = True
     
